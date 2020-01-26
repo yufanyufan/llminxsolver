@@ -35,7 +35,7 @@ public class CoordinateUtil {
     }
   }
 
-  public static int getPermutationCoordinate( byte aPermutation[], byte aCubies[] ) {
+  public static int getPermutationCoordinate(byte[] aPermutation, byte[] aCubies) {
     int coordinate = 0;
     byte[] locations = new byte[aCubies.length];
     System.arraycopy( aCubies, 0, locations, 0, aCubies.length );
@@ -55,7 +55,7 @@ public class CoordinateUtil {
     return coordinate;
   }
 
-  public static void getPermutation( int aCoordinate, byte aPermutation[], byte aCubies[] ) {
+  public static void getPermutation(int aCoordinate, byte[] aPermutation, byte[] aCubies) {
     int[] indices = new int[aCubies.length];
     byte[] locations = new byte[aCubies.length];
     System.arraycopy( aCubies, 0, locations, 0, aCubies.length );
@@ -104,7 +104,7 @@ public class CoordinateUtil {
 //    }
 //  }
 
-  public static int getSeparationCoordinate( byte aPermutation[], byte aCubies[] ) {
+  public static int getSeparationCoordinate(byte[] aPermutation, byte[] aCubies) {
     int coordinate = 0;
     int count = 1;
     for ( int i = 0; i < aPermutation.length; i++ ) {
@@ -120,7 +120,7 @@ public class CoordinateUtil {
     return coordinate;
   }
 
-  public static void getSeparation( int aCoordinate, byte aPermutation[], byte aCubies[] ) {
+  public static void getSeparation(int aCoordinate, byte[] aPermutation, byte[] aCubies) {
     Arrays.fill( aPermutation, ( byte ) -1 );
     for ( int count = aCubies.length; count > 0; count-- ) {
       int position_left;
@@ -140,7 +140,7 @@ public class CoordinateUtil {
     return aEdgeCoordinate | getParity( aEdgeCoordinate ) << aEdgeCount - 1;
   }
 
-  public static int getCornerOrientationCoordinate( int aCornerOrientation, byte aCubies[] ) {
+  public static int getCornerOrientationCoordinate(int aCornerOrientation, byte[] aCubies) {
     int coordinate = 0;
     for ( int i = 0; i < aCubies.length - 1; i++ )
       coordinate += POWERS_OF_THREE[i] * ( aCornerOrientation >> aCubies[i] * 2 & 3 );
@@ -148,7 +148,7 @@ public class CoordinateUtil {
     return coordinate;
   }
 
-  public static int getCornerOrientation( int aCornerOrientation, byte aCubies[] ) {
+  public static int getCornerOrientation(int aCornerOrientation, byte[] aCubies) {
     int orientation = 0;
     int sum_orientation = 0;
     int i;

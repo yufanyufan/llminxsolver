@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class LLMinxCubie extends Polygon {
 
-  private byte fCubie;
+  private final byte fCubie;
 
   public LLMinxCubie(byte cubie) {
     fCubie = cubie;

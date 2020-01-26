@@ -69,13 +69,13 @@ public class CoordinateUtilTest {
     int permutation = CoordinateUtil.getPermutationCoordinate(start.getEdgePositions(), cubies);
     System.out.println( permutation );
     byte[] edge_positions = start.getEdgePositions();
-    for (int i = 0; i < edge_positions.length; i++) {
-      System.out.print(edge_positions[i] + " ");
+    for (byte edgePosition : edge_positions) {
+      System.out.print(edgePosition + " ");
     }
     CoordinateUtil.getPermutation(permutation, edge_positions, cubies);
     System.out.println();
-    for (int i = 0; i < edge_positions.length; i++) {
-      System.out.print(edge_positions[i] + " ");
+    for (byte edge_position : edge_positions) {
+      System.out.print(edge_position + " ");
     }
     System.out.println();
   }

@@ -8,8 +8,8 @@ import java.io.*;
 public abstract class AbstractLLMinxPruner implements LLMinxPruner {
 
   private static final String FILE_EXTENSION = ".prn";
-  private String fName;
-  private String fTablePath;
+  private final String fName;
+  private final String fTablePath;
 
   public AbstractLLMinxPruner( String name, String tablePath ) {
     fName = name;
@@ -43,8 +43,8 @@ public abstract class AbstractLLMinxPruner implements LLMinxPruner {
   public void saveTable( byte[] aTable, LLMinxMetric aMetric ) {
     try {
       BufferedOutputStream prun_out = new BufferedOutputStream( new FileOutputStream( getTableFile( aMetric ) ), 1 << 22 );
-      for ( int i = 0; i < aTable.length; i++ ) {
-        prun_out.write( aTable[i] );
+      for (byte b : aTable) {
+        prun_out.write(b);
       }
       prun_out.close();
     }

@@ -13,7 +13,7 @@ public class LLMinxSearchProfiler {
   private static final int DEPTH = 5;
 
   public static void main(String[] args) {
-    Vector<LLMinx> queue = new Vector<LLMinx>();
+    Vector<LLMinx> queue = new Vector<>();
     queue.add(new LLMinx());
     int nodes = 0;
     long time = System.currentTimeMillis();

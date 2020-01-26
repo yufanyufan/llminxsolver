@@ -394,9 +394,9 @@ public enum LLMinxSearchMode {
     }
   );
 
-  private String fDescription;
-  private LLMinxPruner[] fPruners;
-  private byte[] fPossibleMoves;
+  private final String fDescription;
+  private final LLMinxPruner[] fPruners;
+  private final byte[] fPossibleMoves;
   boolean fAllowSuccessiveFaceTurns;
 
   LLMinxSearchMode(String description, byte[] possibleMoves, LLMinxPruner[] pruners) {

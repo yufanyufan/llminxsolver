@@ -7,7 +7,7 @@ public enum LLMinxMetric {
 
   FIFTH("Fifth turn metric"), FACE("Face turn metric");
 
-  private String fDescription;
+  private final String fDescription;
 
   LLMinxMetric(String description) {
     fDescription = description;

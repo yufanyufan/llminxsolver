@@ -8,7 +8,7 @@ import llminx.LLMinx;
  */
 public class EdgePermutationPruner extends AbstractLLMinxPruner {
 
-  private byte[] fEdges;
+  private final byte[] fEdges;
 
   public EdgePermutationPruner(String aName, String aPath, byte[] aEdges) {
     super(aName, aPath);

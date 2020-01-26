@@ -20,14 +20,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
  */
 public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
 
-  private LLMinxCustomizerPanel fCustomizerPanel;
+  private final LLMinxCustomizerPanel fCustomizerPanel;
   private JComboBox fModes;
   private JTextArea fTextArea;
   private JCheckBox fLimitDepth;
@@ -37,16 +36,16 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
   private JLabel fStatusLabel;
   private JEditorPane fInfoPane;
   private JProgressBar fProgressBar;
-  private ArrayList<Component> fDisabledComponents;
-  private LLMinxSolver fMinxSolver;
-  private Timer fStatusTimer;
+  private final ArrayList<Component> fDisabledComponents;
+  private final LLMinxSolver fMinxSolver;
+  private final Timer fStatusTimer;
   private boolean fFollowMessages = true;
   private boolean fLineAdded = true;
 
   public LLMinxSolverMainWindow(LLMinxSolver aSolver) throws HeadlessException {
     super("Last layer megaminx solver");
     getContentPane().setLayout(new GridBagLayout());
-    fDisabledComponents = new ArrayList<Component>();
+    fDisabledComponents = new ArrayList<>();
 
     fMinxSolver = aSolver;
     fMinxSolver.addStatusListener(this);
@@ -117,16 +116,13 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     c.weightx = 1;
     panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Allowed faces"));
     fModes = new JComboBox();
-    for (int i = 0; i < modes.length; i++) {
-      LLMinxSearchMode mode = modes[i];
+    for (LLMinxSearchMode mode : modes) {
       fModes.addItem(mode);
     }
     fModes.setSelectedItem(fMinxSolver.getSearchMode());
-    fModes.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent aItemEvent) {
-        if (aItemEvent.getStateChange() == ItemEvent.SELECTED) {
-          fMinxSolver.setSearchMode((LLMinxSearchMode) aItemEvent.getItem());
-        }
+    fModes.addItemListener(aItemEvent -> {
+      if (aItemEvent.getStateChange() == ItemEvent.SELECTED) {
+        fMinxSolver.setSearchMode((LLMinxSearchMode) aItemEvent.getItem());
       }
     });
     panel.add(fModes, c);
@@ -143,11 +139,9 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     c.anchor = GridBagConstraints.WEST;
     fLimitDepth = new JCheckBox("Limit");
     fLimitDepth.setSelected(fMinxSolver.isLimitDepth());
-    fLimitDepth.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent aActionEvent) {
-        fMinxSolver.setLimitDepth(fLimitDepth.isSelected());
-        fDepthSpinner.setEnabled(fLimitDepth.isSelected());
-      }
+    fLimitDepth.addActionListener(aActionEvent -> {
+      fMinxSolver.setLimitDepth(fLimitDepth.isSelected());
+      fDepthSpinner.setEnabled(fLimitDepth.isSelected());
     });
     panel.add(fLimitDepth, c);
     c.gridx++;
@@ -155,12 +149,10 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Search depth"));
     fDepthSpinner = new JSpinner(new SpinnerNumberModel(fMinxSolver.getMaxDepth(), 1, 50, 1));
     fDepthSpinner.setEnabled(fLimitDepth.isSelected());
-    fDepthSpinner.addChangeListener(new ChangeListener() {
-      public void stateChanged(ChangeEvent changeEvent) {
-        JSpinner spinner = (JSpinner) changeEvent.getSource();
-        Integer value = (Integer) spinner.getValue();
-        fMinxSolver.setMaxDepth(value.intValue());
-      }
+    fDepthSpinner.addChangeListener(changeEvent -> {
+      JSpinner spinner = (JSpinner) changeEvent.getSource();
+      Integer value = (Integer) spinner.getValue();
+      fMinxSolver.setMaxDepth(value);
     });
     panel.add(fDepthSpinner, c);
 
@@ -176,11 +168,7 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Metric"));
     JComboBox metric_box = new JComboBox(LLMinxMetric.values());
     metric_box.setSelectedItem(fMinxSolver.getMetric());
-    metric_box.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent itemEvent) {
-        fMinxSolver.setMetric((LLMinxMetric) itemEvent.getItem());
-      }
-    });
+    metric_box.addItemListener(itemEvent -> fMinxSolver.setMetric((LLMinxMetric) itemEvent.getItem()));
     panel.add(metric_box, c);
     metric_box.setMinimumSize(metric_box.getPreferredSize());
     fDisabledComponents.add(metric_box);
@@ -227,19 +215,13 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     fInfoPane.setHighlighter(null);
     fInfoPane.setBackground(panel.getBackground());
     fInfoPane.addMouseListener( new CharlieListener());
-    fInfoPane.addHyperlinkListener(new HyperlinkListener() {
-
-      public void hyperlinkUpdate(HyperlinkEvent aHyperlinkEvent) {
-        if (HyperlinkEvent.EventType.ACTIVATED.equals(aHyperlinkEvent.getEventType())) {
-          try {
-            Desktop.getDesktop().browse(new URI(aHyperlinkEvent.getURL().toString()));
-          }
-          catch (IOException e) {
-            e.printStackTrace();
-          }
-          catch (URISyntaxException e) {
-            e.printStackTrace();
-          }
+    fInfoPane.addHyperlinkListener(aHyperlinkEvent -> {
+      if (HyperlinkEvent.EventType.ACTIVATED.equals(aHyperlinkEvent.getEventType())) {
+        try {
+          Desktop.getDesktop().browse(new URI(aHyperlinkEvent.getURL().toString()));
+        }
+        catch (IOException | URISyntaxException e) {
+          e.printStackTrace();
         }
       }
     });
@@ -336,9 +318,8 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     fLimitDepth.setEnabled(true);
     fDepthSpinner.setEnabled(fLimitDepth.isSelected());
     fResetButton.setEnabled(true);
-    Iterator<Component> disabled_components = fDisabledComponents.iterator();
-    while (disabled_components.hasNext()) {
-      disabled_components.next().setEnabled(true);
+    for (Component fDisabledComponent : fDisabledComponents) {
+      fDisabledComponent.setEnabled(true);
     }
   }
 
@@ -350,9 +331,8 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
     fLimitDepth.setEnabled(false);
     fDepthSpinner.setEnabled(false);
     fResetButton.setEnabled(false);
-    Iterator<Component> disabled_components = fDisabledComponents.iterator();
-    while (disabled_components.hasNext()) {
-      disabled_components.next().setEnabled(false);
+    for (Component fDisabledComponent : fDisabledComponents) {
+      fDisabledComponent.setEnabled(false);
     }
   }
 
@@ -384,18 +364,14 @@ public class LLMinxSolverMainWindow extends JFrame implements StatusListener {
       fTextArea.setText("");
       fStatusLabel.setText("Initializing search...");
       fMinxSolver.setStart(fCustomizerPanel.getMinx());
-      Runnable solve_task = new Runnable() {
-        public void run() {
-          fMinxSolver.solve();
-          SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-              fProgressBar.setVisible(false);
-              fStatusLabel.setText("Done");
-              fStatusTimer.stop();
-              enableComponents();
-            }
-          });
-        }
+      Runnable solve_task = () -> {
+        fMinxSolver.solve();
+        SwingUtilities.invokeLater(() -> {
+          fProgressBar.setVisible(false);
+          fStatusLabel.setText("Done");
+          fStatusTimer.stop();
+          enableComponents();
+        });
       };
       Thread solve_thread = new Thread(solve_task);
       solve_thread.start();

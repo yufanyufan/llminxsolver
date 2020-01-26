@@ -8,7 +8,7 @@ import util.CoordinateUtil;
  */
 public class CornerPermutationPruner extends AbstractLLMinxPruner {
 
-  private byte[] fCorners;
+  private final byte[] fCorners;
 
   public CornerPermutationPruner(String aName, String aPath, byte[] aCorners) {
     super(aName, aPath);

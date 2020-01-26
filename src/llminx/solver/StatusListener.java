@@ -7,6 +7,6 @@ import java.util.EventListener;
  */
 public interface StatusListener extends EventListener {
 
-  public void statusEvent(StatusEvent aEvent);
+  void statusEvent(StatusEvent aEvent);
 
 }

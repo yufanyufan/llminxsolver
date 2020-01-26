@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class LLMinxSolver {
 
-  public static boolean sDebug;
+  public static final boolean sDebug;
   private LLMinxSearchMode fSearchMode = LLMinxSearchMode.RU_MODE;
   private LLMinxSearchMode fLastSearchMode;
   private LLMinxMetric fMetric = LLMinxMetric.FIFTH;
@@ -25,7 +25,7 @@ public class LLMinxSolver {
   private int fMaxDepth = 12;
   private boolean fLimitDepth = false;
   private int fDepth = 12;
-  private AtomicLong fNodes = new AtomicLong();
+  private final AtomicLong fNodes = new AtomicLong();
   private LLMinxPruner fPruner;
   private long[] pruned;
   private LLMinxPruner[] pruners;
@@ -114,7 +114,7 @@ public class LLMinxSolver {
   public LLMinxSolver( LLMinxSearchMode aSearchMode, int maxDepth ) {
     setSearchMode( aSearchMode );
     fMaxDepth = maxDepth;
-    fEventListeners = new Vector<StatusListener>();
+    fEventListeners = new Vector<>();
   }
 
   public LLMinxSearchMode getSearchMode() {
@@ -225,7 +225,7 @@ public class LLMinxSolver {
         fireEvent( new StatusEvent( StatusEventType.START_DEPTH, "Searching depth " + fDepth + "...", 0 ) );
         LLMinx minx = fStart.clone();
         nextNode(minx);
-        List<Future<Boolean>> list = new ArrayList<Future<Boolean>>();
+        List<Future<Boolean>> list = new ArrayList<>();
         do {
           LLMinx clone = minx.clone();
           list.add(executor.submit(()->solveParallel(clone, goal)));
@@ -307,9 +307,9 @@ public class LLMinxSolver {
     else if ( fMetric == LLMinxMetric.FIFTH ) {
       moves = new byte[possible_moves.length / 2];
       int moves_left = 0;
-      for ( int i = 0; i < possible_moves.length; i++ ) {
-        if ( ( possible_moves[i] % 4 ) < 2 ) {
-          moves[moves_left++] = possible_moves[i];
+      for (byte possible_move : possible_moves) {
+        if ((possible_move % 4) < 2) {
+          moves[moves_left++] = possible_move;
         }
       }
     }
@@ -377,45 +377,38 @@ public class LLMinxSolver {
     System.out.println( "First move" );
     System.out.println();
     System.out.println( "Root: " + LLMinx.MOVE_STRINGS[first_moves[0]] );
-    for ( int i = 0; i < moves.length; i++ ) {
-      byte move = moves[i];
-      System.out.println( LLMinx.MOVE_STRINGS[move] + ": " + LLMinx.MOVE_STRINGS[first_moves[move + 1]] );
+    for (byte move : moves) {
+      System.out.println(LLMinx.MOVE_STRINGS[move] + ": " + LLMinx.MOVE_STRINGS[first_moves[move + 1]]);
     }
     System.out.println();
     System.out.println( "Siblings" );
     System.out.println();
     System.out.print( "      " );
-    for ( int i = 0; i < moves.length; i++ ) {
-      byte move = moves[i];
-      System.out.print( LLMinx.MOVE_STRINGS[move] );
+    for (byte move : moves) {
+      System.out.print(LLMinx.MOVE_STRINGS[move]);
     }
     System.out.println( "" );
     System.out.print( "Root: " );
-    for ( int i = 0; i < moves.length; i++ ) {
-      byte move = moves[i];
+    for (byte move : moves) {
       byte next_sibling = next_siblings[0][move];
-      if ( next_sibling == -1 ) {
-        System.out.print( "--  " );
-      }
-      else {
-        System.out.print( LLMinx.MOVE_STRINGS[next_sibling] );
+      if (next_sibling == -1) {
+        System.out.print("--  ");
+      } else {
+        System.out.print(LLMinx.MOVE_STRINGS[next_sibling]);
       }
     }
     System.out.println( "" );
-    for ( int j = 0; j < moves.length; j++ ) {
-      byte last_move = moves[j];
-      System.out.print( LLMinx.MOVE_STRINGS[last_move] + ": " );
-      for ( int i = 0; i < moves.length; i++ ) {
-        byte move = moves[i];
+    for (byte last_move : moves) {
+      System.out.print(LLMinx.MOVE_STRINGS[last_move] + ": ");
+      for (byte move : moves) {
         byte next_sibling = next_siblings[last_move + 1][move];
-        if ( next_sibling == -1 ) {
-          System.out.print( "--  " );
-        }
-        else {
-          System.out.print( LLMinx.MOVE_STRINGS[next_sibling] );
+        if (next_sibling == -1) {
+          System.out.print("--  ");
+        } else {
+          System.out.print(LLMinx.MOVE_STRINGS[next_sibling]);
         }
       }
-      System.out.println( "" );
+      System.out.println("");
     }
   }
 
@@ -486,11 +479,11 @@ public class LLMinxSolver {
             aPruner.getMinx( i, minx );
 
             // apply all moves on it.
-            for ( int m = 0; m < moves.length; m++ ) {
-              minx.move( moves[m] );
-              coordinate = aPruner.getCoordinate( minx );
+            for (byte move : moves) {
+              minx.move(move);
+              coordinate = aPruner.getCoordinate(minx);
               // if it is a new situation, store depth in table.
-              if ( table[coordinate] == Byte.MAX_VALUE ) {
+              if (table[coordinate] == Byte.MAX_VALUE) {
                 table[coordinate] = next_depth;
                 fNodes.incrementAndGet();
                 previous_depth_length++;
@@ -509,11 +502,11 @@ public class LLMinxSolver {
             aPruner.getMinx( i, minx );
 
             // apply all moves on it.
-            for ( int m = 0; m < moves.length; m++ ) {
-              minx.move( moves[m] );
-              coordinate = aPruner.getCoordinate( minx );
+            for (byte move : moves) {
+              minx.move(move);
+              coordinate = aPruner.getCoordinate(minx);
               // if it is a situation, store depth in table.
-              if ( table[i] == Byte.MAX_VALUE && table[coordinate] == depth ) {
+              if (table[i] == Byte.MAX_VALUE && table[coordinate] == depth) {
                 table[i] = next_depth;
                 previous_depth_length++;
                 fNodes.incrementAndGet();
@@ -530,8 +523,8 @@ public class LLMinxSolver {
   }
 
   private void filterPruningTables() {
-    ArrayList<LLMinxPruner> used_pruners = new ArrayList<LLMinxPruner>();
-    ArrayList<byte[]> used_tables = new ArrayList<byte[]>();
+    ArrayList<LLMinxPruner> used_pruners = new ArrayList<>();
+    ArrayList<byte[]> used_tables = new ArrayList<>();
     for ( int i = 0; i < pruners.length; i++ ) {
       if ( !( pruners[i].usesCornerPermutation() && fIgnoreCornerPositions ) &&
           !( pruners[i].usesEdgePermutation() && fIgnoreEdgePositions ) &&
@@ -541,7 +534,7 @@ public class LLMinxSolver {
         used_tables.add( tables[i] );
       }
     }
-    fUsedPruners = used_pruners.toArray( new LLMinxPruner[used_pruners.size()] );
+    fUsedPruners = used_pruners.toArray(new LLMinxPruner[0]);
     fUsedTables = used_tables.toArray( new byte[used_tables.size()][] );
   }
 
@@ -639,10 +632,8 @@ public class LLMinxSolver {
   }
 
   synchronized private void fireEvent( StatusEvent aStatusEvent ) {
-    Iterator<StatusListener> listeners = fEventListeners.iterator();
-    while ( listeners.hasNext() ) {
-      StatusListener listener = listeners.next();
-      listener.statusEvent( aStatusEvent );
+    for (StatusListener listener : fEventListeners) {
+      listener.statusEvent(aStatusEvent);
     }
   }
 

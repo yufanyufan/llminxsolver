@@ -64,21 +64,21 @@ public class LLMinx implements Comparable<LLMinx> {
   public static final byte B2_MOVE = 18;
   public static final byte B2i_MOVE = 19;
 
-  private static byte[] CORNER_ORIENTATION_CW = new byte[]{
+  private static final byte[] CORNER_ORIENTATION_CW = new byte[]{
     POSITIVE_ORIENTATION,
     NEGATIVE_ORIENTATION,
     NEUTRAL_ORIENTATION,
     IGNORE_ORIENTATION,
   };
 
-  private static byte[] CORNER_ORIENTATION_ANTI_CW = new byte[]{
+  private static final byte[] CORNER_ORIENTATION_ANTI_CW = new byte[]{
     NEGATIVE_ORIENTATION,
     NEUTRAL_ORIENTATION,
     POSITIVE_ORIENTATION,
     IGNORE_ORIENTATION
   };
 
-  public static byte[] INVERSE_MOVES = new byte[]{
+  public static final byte[] INVERSE_MOVES = new byte[]{
     Ri_MOVE,
     R_MOVE,
     R2i_MOVE,
@@ -104,39 +104,39 @@ public class LLMinx implements Comparable<LLMinx> {
   public static final String[] POSITION_STRINGS = {};
   public static final String[] MOVE_STRINGS = {
     "R   ",
-    "R\'  ",
+          "R'  ",
     "R2  ",
-    "R2\' ",
+          "R2' ",
     "L   ",
-    "L\'  ",
+          "L'  ",
     "L2  ",
-    "L2\' ",
+          "L2' ",
     "U   ",
-    "U\'  ",
+          "U'  ",
     "U2  ",
-    "U2\' ",
+          "U2' ",
     "F   ",
-    "F\'  ",
+          "F'  ",
     "F2  ",
-    "F2\' ",
+          "F2' ",
     "B   ",
-    "B\'  ",
+          "B'  ",
     "B2  ",
-    "B2\' ",
+          "B2' ",
   };
 
   private static int sMaxDepth = 100;
   private static boolean sKeepMoves = true;
 
-  private byte[] fCornerPositions;
+  private final byte[] fCornerPositions;
   private boolean[] fIgnoreCornerPositions;
-  private byte[] fEdgePositions;
+  private final byte[] fEdgePositions;
   private boolean[] fIgnoreEdgePositions;
   private int fCornerOrientations;
   private boolean[] fIgnoreCornerOrientations;
   private int fEdgeOrientations;
   private boolean[] fIgnoreEdgeOrientations;
-  private byte[] fMoves;
+  private final byte[] fMoves;
   private int fDepth;
   private byte fLastMove = -1;
 
@@ -212,7 +212,7 @@ public class LLMinx implements Comparable<LLMinx> {
   }
 
   public String getGeneratingMoves() {
-    StringBuffer move_string = new StringBuffer(fDepth * 4);
+    StringBuilder move_string = new StringBuilder(fDepth * 4);
     byte[] moves = new byte[fDepth];
     System.arraycopy(fMoves, 0, moves, 0, fDepth);
     while (simplifyMoves(moves)) ;
@@ -241,7 +241,7 @@ public class LLMinx implements Comparable<LLMinx> {
   }
 
   public String getSolvingMoves() {
-    StringBuffer moves = new StringBuffer(fDepth * 4);
+    StringBuilder moves = new StringBuilder(fDepth * 4);
     for (int i = fDepth - 1; i >= 0; i--) {
       moves.append(MOVE_STRINGS[INVERSE_MOVES[fMoves[i]]]);
     }

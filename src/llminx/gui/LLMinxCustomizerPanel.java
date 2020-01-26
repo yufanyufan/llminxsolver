@@ -17,13 +17,13 @@ import java.util.Iterator;
 public class LLMinxCustomizerPanel extends JPanel implements ComponentListener {
 
   private LLMinx fMinx;
-  private Collection<LLMinxSticker> fHotSpots;
+  private final Collection<LLMinxSticker> fHotSpots;
   private LLMinxSticker fSelection;
   private LLMinxSticker fInteraction;
 
   public LLMinxCustomizerPanel(LLMinx minx) {
     fMinx = minx;
-    fHotSpots = new Vector<LLMinxSticker>();
+    fHotSpots = new Vector<>();
     addComponentListener(this);
     addMouseMotionListener(new MouseMotionAdapter() {
       public void mouseMoved(MouseEvent mouseEvent) {
@@ -63,9 +63,8 @@ public class LLMinxCustomizerPanel extends JPanel implements ComponentListener {
     if (fHotSpots.isEmpty()) updateShapes();
     Graphics2D g = (Graphics2D) graphics;
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Iterator<LLMinxSticker> hot_spots = fHotSpots.iterator();
-    while (hot_spots.hasNext()) {
-      hot_spots.next().paint(g, false, fMinx);
+    for (LLMinxSticker fHotSpot : fHotSpots) {
+      fHotSpot.paint(g, false, fMinx);
     }
     if (fSelection != null) {
       fSelection.paint(g, true, fMinx);

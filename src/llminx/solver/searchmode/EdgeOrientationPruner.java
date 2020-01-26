@@ -8,7 +8,7 @@ import llminx.LLMinx;
  */
 public class EdgeOrientationPruner extends AbstractLLMinxPruner {
 
-  private byte[] fEdges;
+  private final byte[] fEdges;
 
   public EdgeOrientationPruner(String aName, String aPath, byte[] aEdges) {
     super(aName, aPath);

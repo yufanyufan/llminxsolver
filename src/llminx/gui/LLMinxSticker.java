@@ -4,7 +4,6 @@ import llminx.LLMinx;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.awt.geom.AffineTransform;
@@ -79,18 +78,18 @@ public abstract class LLMinxSticker extends Polygon {
 
   public int getCenterX() {
     int sum = 0;
-    for (int i = 0; i < xpoints.length; i++) {
-      sum += xpoints[i];
-    }
-    return sum /= xpoints.length;
+      for (int xpoint : xpoints) {
+          sum += xpoint;
+      }
+    return sum / xpoints.length;
   }
 
   public int getCenterY() {
     int sum = 0;
-    for (int i = 0; i < ypoints.length; i++) {
-      sum += ypoints[i];
-    }
-    return sum /= ypoints.length;
+      for (int ypoint : ypoints) {
+          sum += ypoint;
+      }
+    return sum / ypoints.length;
   }
 
   public abstract void paint(Graphics aGraphics, boolean aSelected, LLMinx aMinx);

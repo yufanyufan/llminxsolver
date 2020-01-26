@@ -5,9 +5,9 @@ package llminx.solver;
  */
 public class StatusEvent {
 
-  private StatusEventType fType;
-  private String fMessage;
-  private double fProgress;
+  private final StatusEventType fType;
+  private final String fMessage;
+  private final double fProgress;
 
   public StatusEvent(StatusEventType type, String aMessage, double progress) {
     fType = type;

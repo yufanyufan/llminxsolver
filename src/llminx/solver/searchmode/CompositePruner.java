@@ -7,8 +7,8 @@ import llminx.LLMinx;
  */
 public class CompositePruner extends AbstractLLMinxPruner {
 
-  private LLMinxPruner fPrunerA;
-  private LLMinxPruner fPrunerB;
+  private final LLMinxPruner fPrunerA;
+  private final LLMinxPruner fPrunerB;
 
   public CompositePruner(String name, String tablePath, LLMinxPruner prunerA, LLMinxPruner prunerB) {
     super(name, tablePath);

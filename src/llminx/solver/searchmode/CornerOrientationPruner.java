@@ -8,7 +8,7 @@ import llminx.LLMinx;
  */
 public class CornerOrientationPruner extends AbstractLLMinxPruner {
 
-  private byte[] fCorners;
+  private final byte[] fCorners;
 
   public CornerOrientationPruner(String aName, String aPath, byte[] aCorners) {
     super(aName, aPath);

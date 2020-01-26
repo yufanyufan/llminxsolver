@@ -6,7 +6,7 @@ package llminx;
 
 public class LLMinxProfiler {
 
-  private static int MOVE_COUNT = 10000000;
+  private static final int MOVE_COUNT = 10000000;
 
   public static void main(String[] args) {
     LLMinx.setMaxDepth(MOVE_COUNT);

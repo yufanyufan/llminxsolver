@@ -8,8 +8,8 @@ import llminx.LLMinx;
  */
 public class SeparationPruner extends AbstractLLMinxPruner {
 
-  private byte[] fCorners;
-  private byte[] fEdges;
+  private final byte[] fCorners;
+  private final byte[] fEdges;
 
   public SeparationPruner(String aName, String aPath, byte[] aCorners, byte[] aEdges) {
     super(aName, aPath);
